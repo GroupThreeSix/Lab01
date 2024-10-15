@@ -1,49 +1,47 @@
+variable "name" {
+  description = "Name of the security group"
+  type        = string
+}
+
+variable "description" {
+  description = "Description of the security group"
+  type        = string
+  default     = "Managed by Terraform"
+}
+
 variable "vpc_id" {
-  description = "The ID of the VPC"
+  description = "ID of the VPC"
   type        = string
 }
 
-variable "user_ip" {
-  description = "The IP address of the user for SSH access"
-  type        = string
+variable "ingress_rules" {
+  description = "List of ingress rules"
+  type = list(object({
+    description      = string
+    from_port        = number
+    to_port          = number
+    protocol         = string
+    cidr_blocks      = list(string)
+    security_groups  = list(string)
+  }))
+  default = []
 }
 
-variable "public_ingress_rules" {
-  description = "List of ingress rules for public security group"
+variable "egress_rules" {
+  description = "List of egress rules"
   type = list(object({
-    description = string
-    from_port   = number
-    to_port     = number
-    protocol    = string
-    cidr_blocks = list(string)
+    description      = string
+    from_port        = number
+    to_port          = number
+    protocol         = string
+    cidr_blocks      = list(string)
+    security_groups  = list(string)
   }))
-  default = [
-    {
-      description = "SSH from user IP"
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      cidr_blocks = []  # This will be set in the module
-    }
-  ]
+  default = []
 }
 
-variable "private_ingress_rules" {
-  description = "List of ingress rules for private security group"
-  type = list(object({
-    description     = string
-    from_port       = number
-    to_port         = number
-    protocol        = string
-    security_groups = list(string)
-  }))
-  default = [
-    {
-      description     = "SSH from public instance"
-      from_port       = 22
-      to_port         = 22
-      protocol        = "tcp"
-      security_groups = []  # This will be set in the module
-    }
-  ]
+variable "tags" {
+  description = "A map of tags to add to the security group"
+  type        = map(string)
+  default     = {}
 }

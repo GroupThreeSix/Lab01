@@ -1,9 +1,14 @@
-output "public_sg_id" {
-  description = "The ID of the public security group"
-  value       = aws_security_group.public.id
+output "security_group_id" {
+  description = "ID of the security group"
+  value       = aws_security_group.main.id
 }
 
-output "private_sg_id" {
-  description = "The ID of the private security group"
-  value       = aws_security_group.private.id
+output "security_group_name" {
+  description = "Name of the security group"
+  value       = aws_security_group.main.name
+}
+
+output "security_group_vpc_id" {
+  description = "VPC ID of the security group"
+  value       = aws_security_group.main.vpc_id
 }
