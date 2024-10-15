@@ -44,3 +44,9 @@ variable "private_ip" {
   type        = string
   default     = null
 }
+
+variable "user_data" {
+  description = "The user data to pass to the instance"
+  type        = string
+  default     = null
+}
