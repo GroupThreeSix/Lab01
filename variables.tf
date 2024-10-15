@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "project_name" {
   description = "Name of the project"
   type        = string
-  default     = "my-project"
+  default     = "groupthreesix"
 }
 
 variable "vpc_cidr" {
@@ -24,7 +24,7 @@ variable "user_ip" {
 variable "key_name" {
   description = "The name of the key pair for SSH access"
   type        = string
-  default     = "my-key"
+  default     = "groupthreesix"
 }
 
 variable "create_resources" {
