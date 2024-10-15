@@ -27,6 +27,7 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_route_table" "public" {
+  count = length(aws_subnet.public)
   vpc_id = aws_vpc.this.id
 
   tags = merge(
@@ -38,7 +39,7 @@ resource "aws_route_table" "public" {
 resource "aws_route_table_association" "public" {
   count          = length(aws_subnet.public)
   subnet_id      = element(aws_subnet.public.*.id, count.index)
-  route_table_id = aws_route_table.public.id
+  route_table_id = element(aws_route_table.public.*.id, count.index)
 }
 
 # Private Subnet
@@ -69,7 +70,7 @@ resource "aws_route_table" "private" {
 resource "aws_route_table_association" "private" {
   count          = length(aws_subnet.private)
   subnet_id      = element(aws_subnet.private.*.id, count.index)
-  route_table_id = aws_route_table.private.id
+  route_table_id = element(aws_route_table.private.*.id, count.index)
 }
 
 # Internet Gateway
@@ -93,7 +94,7 @@ resource "aws_eip" "nat" {
 
   tags = merge(
     {
-      Name = format("${var.name}-nat-eip-%s", var.availability_zones)
+      Name = format("${var.name}-nat-eip-%s", element(var.availability_zones, count.index))
     },
     var.tags
   )
@@ -110,7 +111,7 @@ resource "aws_nat_gateway" "this" {
 
   tags = merge(
     {
-      Name = format("${var.name}-nat-gateway-%s", var.availability_zones)
+      Name = format("${var.name}-nat-gateway-%s", element(var.availability_zones, count.index))
     },
     var.tags
   )

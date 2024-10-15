@@ -20,13 +20,15 @@ module "vpc" {
 }
 
 resource "aws_route" "internet_gateway" {
-  route_table_id         = module.vpc.public_route_table_id
+  count = length(module.vpc.public_route_table_ids)
+  route_table_id         = element(module.vpc.public_route_table_ids, count.index)
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = module.vpc.internet_gateway_id
 }
 
 resource "aws_route" "nat_gateway" {
-  route_table_id         = module.vpc.private_route_table_id
+  count = length(module.vpc.private_route_table_ids)
+  route_table_id         = element(module.vpc.private_route_table_ids, count.index)
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = module.vpc.nat_gateway_id
 }
