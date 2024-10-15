@@ -12,7 +12,6 @@ module "default_sg" {
       to_port          = 0
       protocol         = "-1"
       cidr_blocks      = [var.vpc_cidr]
-      ipv6_cidr_blocks = []
       security_groups  = []
     }
   ]
@@ -24,7 +23,6 @@ module "default_sg" {
       to_port          = 0
       protocol         = "-1"
       cidr_blocks      = ["0.0.0.0/0"]
-      ipv6_cidr_blocks = ["::/0"]
       security_groups  = []
     }
   ]
@@ -76,7 +74,6 @@ module "public_ec2_sg" {
       to_port          = 22
       protocol         = "tcp"
       cidr_blocks      = ["${var.user_ip}/32"]
-      ipv6_cidr_blocks = []
       security_groups  = []
     }
   ]
@@ -88,7 +85,6 @@ module "public_ec2_sg" {
       to_port          = 0
       protocol         = "-1"
       cidr_blocks      = ["0.0.0.0/0"]
-      ipv6_cidr_blocks = ["::/0"]
       security_groups  = []
     }
   ]
