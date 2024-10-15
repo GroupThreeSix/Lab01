@@ -1,14 +1,14 @@
-output "public_instance_id" {
-  description = "The ID of the public EC2 instance"
-  value       = aws_instance.public[*].id
+output "instance_id" {
+  description = "ID of the EC2 instance"
+  value       = aws_instance.this.id
 }
 
-output "private_instance_id" {
-  description = "The ID of the private EC2 instance"
-  value       = aws_instance.private[*].id
+output "instance_public_ip" {
+  description = "Public IP address of the EC2 instance"
+  value       = aws_instance.this.public_ip
 }
 
-output "public_instance_public_ip" {
-  description = "The public IP of the public EC2 instance"
-  value       = aws_instance.public[*].public_ip
+output "instance_private_ip" {
+  description = "Private IP address of the EC2 instance"
+  value       = aws_instance.this.private_ip
 }

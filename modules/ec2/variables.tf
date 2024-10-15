@@ -1,36 +1,46 @@
-variable "public_instance_count" {
-  description = "The number of public instances to deploy"
-  type        = number
-  default     = 1
-}
-
-variable "private_instance_count" {
-  description = "The number of private instances to deploy"
-  type        = number
-  default     = 1
-}
-
-variable "public_subnet_id" {
-  description = "The ID of the public subnet"
+variable "name" {
+  description = "The name to give the instance"
   type        = string
 }
 
-variable "private_subnet_id" {
-  description = "The ID of the private subnet"
+variable "ami_id" {
+  description = "The ID of the AMI to use for the instance"
   type        = string
 }
 
-variable "public_sg_id" {
-  description = "The ID of the public security group"
-  type        = string
-}
-
-variable "private_sg_id" {
-  description = "The ID of the private security group"
+variable "instance_type" {
+  description = "The instance type of the EC2 instance"
   type        = string
 }
 
 variable "key_name" {
-  description = "The name of the key pair for SSH access"
+  description = "The key pair name for the EC2 instance"
   type        = string
+}
+
+variable "availability_zone" {
+  description = "The availability zone to launch the instance in"
+  type        = string
+}
+
+variable "subnet_id" {
+  description = "The ID of the subnet to launch the instance in"
+  type        = string
+}
+
+variable "security_group_ids" {
+  description = "A list of security group IDs to associate with the instance"
+  type        = list(string)
+}
+
+variable "associate_public_ip" {
+  description = "Whether to associate a public IP address with the instance"
+  type        = bool
+  default     = false
+}
+
+variable "private_ip" {
+  description = "The private IP address to assign to the instance"
+  type        = string
+  default     = null
 }
