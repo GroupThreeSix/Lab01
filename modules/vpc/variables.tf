@@ -36,6 +36,12 @@ variable "igw_tags" {
   default     = {}
 }
 
+variable "enable_internet_gateway" {
+  description = "Enable internet gateway"
+  type        = bool
+  default     = true
+}
+
 variable "enable_nat_gateway" {
   description = "Enable NAT gateway"
   type        = bool
