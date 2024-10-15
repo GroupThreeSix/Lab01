@@ -25,10 +25,20 @@ output "nat_gateway_id" {
 
 output "public_route_table_id" {
   description = "ID of the public route table"
-  value       = aws_route_table.public.id
+  value       = aws_route_table.public[*].id
 }
 
 output "private_route_table_id" {
   description = "ID of the private route table"
-  value       = aws_route_table.private.id
+  value       = aws_route_table.private[*].id
+}
+
+output "elastic_ip" {
+  description = "Elastic IP address associated with the instance (if created)"
+  value       = aws_eip.nat[0].public_ip
+}
+
+output "availability_zones" {
+  description = "A list of availability zones specified as argument to this module"
+  value       = var.availability_zones
 }
