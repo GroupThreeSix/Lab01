@@ -17,6 +17,7 @@ module "vpc" {
   private_subnet     = local.private_subnet
 
   enable_nat_gateway = true
+  enable_internet_gateway = true
 }
 
 resource "aws_route" "internet_gateway" {

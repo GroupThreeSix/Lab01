@@ -26,9 +26,3 @@ variable "key_name" {
   type        = string
   default     = "groupthreesix"
 }
-
-variable "create_resources" {
-  description = "Whether to create the resources"
-  type        = bool
-  default     = true
-}

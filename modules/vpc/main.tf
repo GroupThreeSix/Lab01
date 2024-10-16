@@ -27,7 +27,6 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_route_table" "public" {
-  count = length(aws_subnet.public)
   vpc_id = aws_vpc.this.id
 
   tags = merge(
@@ -115,4 +114,6 @@ resource "aws_nat_gateway" "this" {
     },
     var.tags
   )
+
+  depends_on = [ aws_internet_gateway.this ]
 }
