@@ -1,47 +1,102 @@
-<!-- BEGIN_TF_DOCS -->
-## Requirements
+# Sử dụng Terraform để quản lý và triển khai hạ tầng AWS 
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.0 |
 
-## Providers
+## Giới thiệu
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.67.0 |
+Sử dụng Terraform để tự động hóa việc triển khai cơ sở hạ tầng AWS, bao gồm VPC, Subnets, Internet Gateway, NAT Gateway, EC2 instances và Security Groups.
 
-## Modules
+## Cấu trúc project
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_ec2"></a> [ec2](#module\_ec2) | ./modules/ec2 | n/a |
-| <a name="module_nat_gateway"></a> [nat\_gateway](#module\_nat\_gateway) | ./modules/nat_gateway | n/a |
-| <a name="module_route_tables"></a> [route\_tables](#module\_route\_tables) | ./modules/route_tables | n/a |
-| <a name="module_security_groups"></a> [security\_groups](#module\_security\_groups) | ./modules/security_groups | n/a |
-| <a name="module_vpc"></a> [vpc](#module\_vpc) | ./modules/vpc | n/a |
+```
+.
+├── 01-network.tf
+├── 02-security_groups.tf
+├── 03-keypair.tf
+├── 04-ec2.tf
+├── outputs.tf
+├── provider.tf
+├── variables.tf
+├── version.tf
+└── modules
+    ├── ec2
+    │   ├── main.tf
+    │   ├── outputs.tf
+    │   └── variables.tf
+    ├── keypair
+    │   ├── main.tf
+    │   ├── output.tf
+    │   └── variables.tf
+    ├── security_groups
+    │   ├── main.tf
+    │   ├── outputs.tf
+    │   └── variables.tf
+    └── vpc
+        ├── main.tf
+        ├── outputs.tf
+        └── variables.tf
+```
 
-## Resources
+Project được tổ chức thành các module sau:
 
-| Name | Type |
-|------|------|
-| [aws_key_pair.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource |
+- `vpc`: Tạo VPC, Subnets, Internet Gateway và NAT Gateway
+- `ec2`: Tạo EC2 instances
+- `security_groups`: Tạo và quản lý Security Groups
+- `keypair`: Quản lý SSH key pairs
 
-## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | The AWS region to deploy the resources | `string` | `"us-east-1"` | no |
-| <a name="input_create_resources"></a> [create\_resources](#input\_create\_resources) | Whether to create the resources | `bool` | `true` | no |
-| <a name="input_key_name"></a> [key\_name](#input\_key\_name) | The name of the key pair for SSH access | `string` | n/a | yes |
-| <a name="input_private_instance_count"></a> [private\_instance\_count](#input\_private\_instance\_count) | The number of private instances to deploy | `number` | `1` | no |
-| <a name="input_public_instance_count"></a> [public\_instance\_count](#input\_public\_instance\_count) | The number of public instances to deploy | `number` | `1` | no |
-| <a name="input_user_ip"></a> [user\_ip](#input\_user\_ip) | The IP address of the user for SSH access | `string` | n/a | yes |
+## Hạ tầng sẽ triển khai
+1. VPC với Public và Private Subnets
+2. Internet Gateway cho Public Subnet
+3. NAT Gateway cho Private Subnet
+4. Route Tables cho Public và Private Subnets
+5. EC2 instances trong Public và Private Subnets
+6. Security Groups cho EC2 instances
+7. Tự động tạo và quản lý SSH key pairs
 
-## Outputs
+![image](https://media.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Ftm86cvxzndy4c4e5dw75.png)
 
-| Name | Description |
-|------|-------------|
-| <a name="output_private_instance_id"></a> [private\_instance\_id](#output\_private\_instance\_id) | The ID of the private EC2 instance |
-| <a name="output_public_instance_public_ip"></a> [public\_instance\_public\_ip](#output\_public\_instance\_public\_ip) | The public IP of the public EC2 instance |
-<!-- END_TF_DOCS -->
+## Yêu cầu
+
+- Terraform (phiên bản >= 0.12)
+- AWS CLI đã được cấu hình với thông tin đăng nhập hợp lệ.
+
+## Cách sử dụng
+
+1. Clone repository này về máy local của bạn.
+
+2. Điều chỉnh các biến trong file `terraform.tfvars` theo nhu cầu của bạn dựa vào file `variables.tf`.
+
+3. Khởi tạo Terraform:
+
+   ```
+   terraform init
+   ```
+
+4. Sử dụng lệnh để format code theo chuẩn terraform:   
+
+   ```
+   terraform fmt
+   ```
+
+5. Xem trước các thay đổi:
+
+   ```
+   terraform plan
+   ```
+
+5. Áp dụng cấu hình:
+
+   ```
+   terraform apply
+   ```
+
+6. Khi muốn xóa toàn bộ tài nguyên:
+
+   ```
+   terraform destroy
+   ```
+
+## Lưu ý bảo mật
+
+- Đảm bảo rằng bạn không chia sẻ file `.tfstate` hoặc bất kỳ file nào chứa thông tin nhạy cảm.
+- Sử dụng biến `user_ip` để giới hạn truy cập SSH vào EC2 instance công khai.
