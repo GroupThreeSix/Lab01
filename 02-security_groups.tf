@@ -7,23 +7,23 @@ module "default_sg" {
 
   ingress_rules = [
     {
-      description      = "Allow all incoming traffic within the VPC"
-      from_port        = 0
-      to_port          = 0
-      protocol         = "-1"
-      cidr_blocks      = [var.vpc_cidr]
-      security_groups  = []
+      description     = "Allow all incoming traffic within the VPC"
+      from_port       = 0
+      to_port         = 0
+      protocol        = "-1"
+      cidr_blocks     = [var.vpc_cidr]
+      security_groups = []
     }
   ]
 
   egress_rules = [
     {
-      description      = "Allow all outbound traffic"
-      from_port        = 0
-      to_port          = 0
-      protocol         = "-1"
-      cidr_blocks      = ["0.0.0.0/0"]
-      security_groups  = []
+      description     = "Allow all outbound traffic"
+      from_port       = 0
+      to_port         = 0
+      protocol        = "-1"
+      cidr_blocks     = ["0.0.0.0/0"]
+      security_groups = []
     }
   ]
 }
@@ -69,23 +69,23 @@ module "public_ec2_sg" {
 
   ingress_rules = [
     {
-      description      = "Allow SSH from specific IP"
-      from_port        = 22
-      to_port          = 22
-      protocol         = "tcp"
-      cidr_blocks      = ["${var.user_ip}/32"]
-      security_groups  = []
+      description     = "Allow SSH from specific IP"
+      from_port       = 22
+      to_port         = 22
+      protocol        = "tcp"
+      cidr_blocks     = ["${var.user_ip}/32"]
+      security_groups = []
     }
   ]
 
   egress_rules = [
     {
-      description      = "Allow all outbound traffic"
-      from_port        = 0
-      to_port          = 0
-      protocol         = "-1"
-      cidr_blocks      = ["0.0.0.0/0"]
-      security_groups  = []
+      description     = "Allow all outbound traffic"
+      from_port       = 0
+      to_port         = 0
+      protocol        = "-1"
+      cidr_blocks     = ["0.0.0.0/0"]
+      security_groups = []
     }
   ]
 }
