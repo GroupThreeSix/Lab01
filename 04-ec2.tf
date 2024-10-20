@@ -27,13 +27,6 @@ module "public_ec2" {
   security_group_ids = [module.public_ec2_sg.security_group_id]
 
   associate_public_ip = true
-
-  user_data = <<-EOF
-    #!/bin/bash
-    mkdir -p /home/ec2-user/.ssh
-    echo "${module.keypair.private_key_pem}" > /home/ec2-user/.ssh/"${var.key_name}".pem
-    chmod 600 /home/ec2-user/.ssh/"${var.key_name}".pem
-  EOF
 }
 
 module "private_ec2" {
@@ -47,7 +40,7 @@ module "private_ec2" {
   key_name      = var.key_name
 
   availability_zone  = element(module.vpc.availability_zones, count.index)
-  subnet_id          = element(module.vpc.public_subnet_ids, count.index)
+  subnet_id          = element(module.vpc.private_subnet_ids, count.index)
   security_group_ids = [module.private_ec2_sg.security_group_id]
 
   associate_public_ip = false

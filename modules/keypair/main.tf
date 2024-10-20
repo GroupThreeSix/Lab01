@@ -8,5 +8,5 @@ resource "aws_key_pair" "this" {
 resource "tls_private_key" "this" {
   count = var.create_private_key ? 1 : 0
 
-  algorithm = "ED25519"
+  algorithm = "RSA"
 }
