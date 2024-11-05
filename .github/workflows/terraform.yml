@@ -62,7 +62,6 @@ jobs:
 
     - name: Terraform Plan
       id: plan
-      if: github.event_name == 'pull_request'
       run: terraform plan -var="user_ip=${{ secrets.USER_IP }}" -no-color
       continue-on-error: true
 
@@ -95,5 +94,4 @@ jobs:
     #       })
 
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -var="user_ip=${{ secrets.USER_IP }}" -auto-approve 
