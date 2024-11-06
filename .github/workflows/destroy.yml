@@ -35,8 +35,11 @@ jobs:
     - name: Terraform Workspace
       run: terraform workspace select default || terraform workspace new default
 
+    - name: Downlaod terraform.tfstate from S3
+      run: aws s3 cp s3://bucket-dacn/state/terraform.tfstate . 
+
     - name: Terraform Destroy Plan
-      run: terraform plan -destroy -var="user_ip=${{ secrets.USER_IP }}" -out=destroy.tfplan
+      run: terraform plan -destroy -out=destroy.tfplan
 
     - name: Terraform Destroy
       run: terraform apply "destroy.tfplan"
