@@ -35,7 +35,7 @@ jobs:
     - name: Terraform Workspace
       run: terraform workspace select default || terraform workspace new default
 
-    - name: Downlaod terraform.tfstate from S3
+    - name: Download terraform.tfstate from S3
       run: aws s3 cp s3://groupthreesix-terraform-state/terraform.tfstate . 
 
     - name: Terraform Destroy Plan
@@ -48,4 +48,9 @@ jobs:
       if: success()
       run: |
         aws s3 rm s3://groupthreesix-terraform-state/terraform.tfstate
+        aws s3api delete-objects --bucket groupthreesix-terraform-state \
+          --delete "$(aws s3api list-object-versions \
+            --bucket groupthreesix-terraform-state \
+            --output json \
+            --query '{Objects: [].{Key:Key,VersionId:VersionId}}')"
         aws s3api delete-bucket --bucket groupthreesix-terraform-state
