@@ -39,7 +39,7 @@ jobs:
       run: aws s3 cp s3://groupthreesix-terraform-state/terraform.tfstate . 
 
     - name: Terraform Destroy Plan
-      run: terraform plan -destroy -out=destroy.tfplan
+      run: terraform plan -var="user_ip=${{ secrets.USER_IP }}" -destroy -out=destroy.tfplan
 
     - name: Terraform Destroy
       run: terraform apply "destroy.tfplan"
