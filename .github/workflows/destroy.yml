@@ -36,10 +36,16 @@ jobs:
       run: terraform workspace select default || terraform workspace new default
 
     - name: Downlaod terraform.tfstate from S3
-      run: aws s3 cp s3://bucket-dacn/state/terraform.tfstate . 
+      run: aws s3 cp s3://groupthreesix-terraform-state/terraform.tfstate . 
 
     - name: Terraform Destroy Plan
       run: terraform plan -destroy -out=destroy.tfplan
 
     - name: Terraform Destroy
       run: terraform apply "destroy.tfplan"
+
+    - name: Clean up state bucket
+      if: success()
+      run: |
+        aws s3 rm s3://groupthreesix-terraform-state/terraform.tfstate
+        aws s3api delete-bucket --bucket groupthreesix-terraform-state
