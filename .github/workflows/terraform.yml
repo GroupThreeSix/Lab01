@@ -47,6 +47,17 @@ jobs:
         output_file: results.sarif
         soft_fail: true
 
+    - name: Ensure S3 bucket exists
+      run: |
+        aws s3api head-bucket --bucket groupthreesix-terraform-state 2>/dev/null || \
+        aws s3api create-bucket --bucket groupthreesix-terraform-state --region us-east-1
+
+    - name: Enable S3 bucket versioning
+      run: |
+        aws s3api put-bucket-versioning \
+          --bucket groupthreesix-terraform-state \
+          --versioning-configuration Status=Enabled
+
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v3
       if: always()
